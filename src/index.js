@@ -13,7 +13,7 @@ import './index.css';
 // передав в пропе basename точное название твоего репозитория.
 // Слеши в начале и конце строки обязательны.
 //
-// <BrowserRouter basename="/_____repo_name______/">
+// <BrowserRouter basename="/goit-react-hw-06-phonebook/">
 //   <App />
 // </BrowserRouter>
 //
