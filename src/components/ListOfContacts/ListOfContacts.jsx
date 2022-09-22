@@ -1,15 +1,9 @@
 import React from 'react';
 import { Box } from 'components/Common/Box.styled';
-import {
-  List,
-  ListItem,
-  Name,
-  Number,
-  Button,
-} from 'components/ListOfContacts/ListOfContacts.styled';
+import { List, ListItem, Name, Number, Button } from 'components/ListOfContacts/ListOfContacts.styled';
 import { PropTypes } from 'prop-types';
 
-export const ListOfContacts = ({ formikSelected, onDeleteContact, onEditContact, contacts }) => {
+export const ListOfContacts = ({ onDeleteContact, onEditContact, contacts }) => {
   return (
     <List>
       {contacts.length > 0
@@ -20,15 +14,13 @@ export const ListOfContacts = ({ formikSelected, onDeleteContact, onEditContact,
                 <Number className="number">{contact.number}</Number>
               </Box>
               <Box>
-                {!formikSelected && (
-                  <Button
-                    onClick={() => {
-                      onEditContact(contact.id);
-                    }}
-                  >
-                    ✏️
-                  </Button>
-                )}
+                <Button
+                  onClick={() => {
+                    onEditContact(contact.id);
+                  }}
+                >
+                  ✏️
+                </Button>
                 <Button
                   onClick={() => {
                     onDeleteContact(contact.id);

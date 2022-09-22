@@ -4,13 +4,10 @@ import { nanoid } from 'nanoid';
 import { Box } from 'components/Common/Box.styled';
 import { Section } from 'components/Section/Section';
 import { ContactForm } from 'components/ContactForm/ContactForm';
-import { ContactFormFormik } from 'components/ContactFormFormik/ContactFormFormik';
 import { ListOfContacts } from 'components/ListOfContacts/ListOfContacts';
 import { FilterForm } from 'components/Filter/Filter';
-import { FormikSelect } from 'components/FormikSelect/FormikSelect';
 
 const LS_CONTACTS_KEY = 'hw_contacts_phonebook';
-const LS_IS_FORMIK_SELECTED = 'hw_contacts_isFormikSelected';
 
 const exampleContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-84' },
@@ -21,7 +18,6 @@ const exampleContacts = [
 
 export const App = () => {
   const [contacts, setContacts] = useState(exampleContacts);
-  const [formikSelected, setFormikSelected] = useState(false);
   const [filter, setFilter] = useState('');
   const [editId, setEditId] = useState('');
   const [editName, setEditName] = useState('');
@@ -30,20 +26,13 @@ export const App = () => {
   useEffect(() => {
     const savedContacts = localStorage.getItem(LS_CONTACTS_KEY);
     const parsedContacts = savedContacts ? JSON.parse(savedContacts) : exampleContacts;
-    const isFormikSelected = localStorage.getItem(LS_IS_FORMIK_SELECTED)?.toString().toLocaleLowerCase === 'true';
 
     setContacts(parsedContacts);
-    setFormikSelected(isFormikSelected);
   }, []);
 
   useEffect(() => {
     localStorage.setItem(LS_CONTACTS_KEY, JSON.stringify(contacts));
   }, [contacts]);
-
-  const onFormikSelect = ({ target: { checked } }) => {
-    localStorage.setItem(LS_IS_FORMIK_SELECTED, checked);
-    setFormikSelected(checked);
-  };
 
   const onAddContact = ({ id, name, number }) => {
     name = name.trim();
@@ -104,21 +93,14 @@ export const App = () => {
   return (
     <Box display="flex" flexDirection="row">
       <Box display="flex" flexDirection="column">
-        <Section>
-          <FormikSelect isSelected={formikSelected} onFormikSelect={onFormikSelect} />
-        </Section>
         <Section title="Contact info">
-          {formikSelected ? (
-            <ContactFormFormik onSubmit={onAddContact} onResetForm={onResetForm} />
-          ) : (
-            <ContactForm
-              editId={editId}
-              editName={editName}
-              editNumber={editNumber}
-              onSubmit={onAddContact}
-              onResetForm={onResetForm}
-            />
-          )}
+          <ContactForm
+            editId={editId}
+            editName={editName}
+            editNumber={editNumber}
+            onSubmit={onAddContact}
+            onResetForm={onResetForm}
+          />
         </Section>
         {contacts.length > 0 && (
           <Section>
@@ -131,7 +113,6 @@ export const App = () => {
         <Box display="flex" flexDirection="column">
           <Section title="Contact list" height="100%">
             <ListOfContacts
-              formikSelected={formikSelected}
               onEditContact={onEditContact}
               onDeleteContact={onDeleteContact}
               contacts={filteredContacts}
@@ -142,138 +123,3 @@ export const App = () => {
     </Box>
   );
 };
-
-// export class OldApp extends Component {
-//   // state = {
-//   //   contacts: exampleContacts,
-//   //   formikSelected: false,
-//   //   filter: '',
-//   //   editId: '',
-//   //   editName: '',
-//   //   editNumber: '',
-//   // };
-
-//   // componentDidMount() {
-//   //   const savedContacts = localStorage.getItem(LS_CONTACTS_KEY);
-//   //   const parsedContacts = savedContacts ? JSON.parse(savedContacts) : exampleContacts;
-//   //   const isFormikSelected = localStorage.getItem(LS_IS_FORMIK_SELECTED)?.toString().toLocaleLowerCase === 'true';
-
-//   //   this.setState({
-//   //     contacts: parsedContacts,
-//   //     formikSelected: isFormikSelected,
-//   //   });
-//   // }
-
-//   // componentDidUpdate(_, prevState) {
-//   //   if (prevState.contacts === this.state.contacts) return;
-
-//   //   localStorage.setItem(LS_CONTACTS_KEY, JSON.stringify(this.state.contacts));
-//   // }
-
-//   // onFormikSelect = ({ target: { checked } }) => {
-//   //   localStorage.setItem(LS_IS_FORMIK_SELECTED, checked);
-//   //   this.setState({ formikSelected: checked });
-//   // };
-
-//   // onAddContact = ({ id, name, number }) => {
-//   //   name = name.trim();
-//   //   const normalizedName = name.toLocaleLowerCase();
-
-//   //   if (id !== '' && id !== null) {
-//   //     this.onDeleteContact(id);
-//   //   } else {
-//   //     if (this.state.contacts.some(({ name }) => name.toLocaleLowerCase() === normalizedName)) {
-//   //       window.alert('This name already exists in the list!');
-//   //       return;
-//   //     }
-//   //   }
-
-//   //   id ||= nanoid();
-//   //   this.onSaveContact({ id, name, number });
-//   //   return id;
-//   // };
-
-//   // onEditContact = id => {
-//   //   const { name, number } = this.state.contacts.find(({ id: cid }) => id === cid);
-//   //   this.setState({ editId: id, editName: name, editNumber: number });
-//   // };
-
-//   // onSaveContact = ({ id, name, number }) => {
-//   //   this.setState(({ contacts }) => ({
-//   //     contacts: [...contacts, { id, name, number }],
-//   //   }));
-//   //   this.setState({ editId: '', editName: '', editNumber: '' });
-//   // };
-
-//   // onResetForm = () => {
-//   //   this.setState({ editId: '', editName: '', editNumber: '' });
-//   // };
-
-//   // onDeleteContact = id => {
-//   //   this.setState({
-//   //     contacts: this.state.contacts.filter(contact => contact.id !== id),
-//   //   });
-//   //   if (this.state.contacts.length === 1) this.clearFilterField();
-//   // };
-
-//   // onFilterContacts = ({ currentTarget: { value } }) => {
-//   //   this.setState({ filter: value });
-//   // };
-
-//   // clearFilterField = () => {
-//   //   this.setState({ filter: '' });
-//   // };
-
-//   // render() {
-//   //   return (
-//   //     <Box display="flex" flexDirection="row">
-//   //       <Box display="flex" flexDirection="column">
-//   //         <Section>
-//   //           <FormikSelect isSelected={this.state.formikSelected} onFormikSelect={this.onFormikSelect} />
-//   //         </Section>
-//   //         <Section title="Contact info">
-//   //           {this.state.formikSelected ? (
-//   //             <ContactFormFormik
-//   //               editId={editId}
-//   //               editName={editName}
-//   //               editNumber={editNumber}
-//   //               onSubmit={this.onAddContact}
-//   //               onResetForm={this.onResetForm}
-//   //             />
-//   //           ) : (
-//   //             <ContactForm
-//   //               editId={editId}
-//   //               editName={editName}
-//   //               editNumber={editNumber}
-//   //               onSubmit={this.onAddContact}
-//   //               onResetForm={this.onResetForm}
-//   //             />
-//   //           )}
-//   //         </Section>
-//   //         {this.state.contacts.length > 0 && (
-//   //           <Section>
-//   //             <FilterForm
-//   //               filterValue={this.state.filter}
-//   //               onClear={this.clearFilterField}
-//   //               onChange={this.onFilterContacts}
-//   //             />
-//   //           </Section>
-//   //         )}
-//   //       </Box>
-
-//   //       {this.state.contacts.length > 0 && (
-//   //         <Box display="flex" flexDirection="column">
-//   //           <Section title="Contact list" height="100%">
-//   //             <ListOfContacts
-//   //               formikSelected={this.state.formikSelected}
-//   //               onEditContact={this.onEditContact}
-//   //               onDeleteContact={this.onDeleteContact}
-//   //               contacts={filteredContacts}
-//   //             ></ListOfContacts>
-//   //           </Section>
-//   //         </Box>
-//   //       )}
-//   //     </Box>
-//   //   );
-//   // }
-// }
