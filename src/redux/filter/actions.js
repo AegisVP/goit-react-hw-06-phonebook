@@ -1,7 +1,7 @@
-import { createAction } from '@reduxjs/toolkit';
+// import { createAction } from '@reduxjs/toolkit';
 
-export const searchFilter = createAction('filter/search', search => {
-  return {
-    payload: { search },
-  };
-});
+// export const searchFilter = createAction('filter/search', search => {
+//   return {
+//     payload: { search },
+//   };
+// });

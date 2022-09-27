@@ -3,7 +3,7 @@ import { Box } from 'components/Common/Box.styled';
 import { Button, Label, InputField } from 'components/Filter/Filter.styled';
 // import { PropTypes } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { searchFilter } from 'redux/filter/actions';
+import { searchFilter } from 'redux/sliceFilter';
 
 export const FilterForm = () => {
   const filter = useSelector(store => store.contacts?.filter);

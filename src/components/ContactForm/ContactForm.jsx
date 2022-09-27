@@ -1,7 +1,7 @@
 import React from 'react';
 import { SubmitButton, Label, InputField } from './ContactForm.styled';
 import { Box } from 'components/Common/Box.styled';
-import { addContact } from 'redux/phonebook/actions';
+import { addContact } from 'redux/slicePhonebook';
 import { useDispatch } from 'react-redux';
 
 export const ContactForm = ({ editId, editName, editNumber, onSubmit, onResetForm }) => {

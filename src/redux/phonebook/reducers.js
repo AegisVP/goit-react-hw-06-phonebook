@@ -31,27 +31,27 @@ import { addContact, deleteContact } from './actions';
 //   }
 // };
 
-export const phonebookReducer = createReducer(initialPhonebookValues, {
-  [addContact]: (phonebook, action) => {
-    const { id, name, number } = action.payload;
-    const newName = name.trim();
-    const normalizedName = newName.toLocaleLowerCase();
+// export const phonebookReducer = createReducer(initialPhonebookValues, {
+//   [addContact]: (phonebook, action) => {
+//     const { id, name, number } = action.payload;
+//     const newName = name.trim();
+//     const normalizedName = newName.toLocaleLowerCase();
 
-    if (phonebook.some(({ name }) => name.toLocaleLowerCase() === normalizedName)) {
-      window.alert('This name already exists in the list!');
-      return [...phonebook];
-    }
+//     if (phonebook.some(({ name }) => name.toLocaleLowerCase() === normalizedName)) {
+//       window.alert('This name already exists in the list!');
+//       return [...phonebook];
+//     }
 
-    return [
-      ...phonebook,
-      {
-        id,
-        name: newName,
-        number,
-      },
-    ];
-  },
-  [deleteContact]: (phonebook, action) => {
-    return phonebook.filter(item => item.id !== action.payload.id);
-  },
-});
+//     return [
+//       ...phonebook,
+//       {
+//         id,
+//         name: newName,
+//         number,
+//       },
+//     ];
+//   },
+//   [deleteContact]: (phonebook, action) => {
+//     return phonebook.filter(item => item.id !== action.payload.id);
+//   },
+// });

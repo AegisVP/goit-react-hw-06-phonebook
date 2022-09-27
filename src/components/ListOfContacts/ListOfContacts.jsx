@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box } from 'components/Common/Box.styled';
 import { List, ListItem, Name, Number, Button } from 'components/ListOfContacts/ListOfContacts.styled';
-import { deleteContact } from 'redux/phonebook/actions';
+import { deleteContact } from 'redux/slicePhonebook';
 import { useDispatch } from 'react-redux';
 
-export const ListOfContacts = ({ onDeleteContact, contacts }) => {
+export const ListOfContacts = ({ contacts }) => {
   const dispatch = useDispatch();
 
   return (

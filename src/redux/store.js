@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { filtersReducer } from './filter/reducers';
-import { phonebookReducer } from './phonebook/reducers';
+import { filtersReducer } from './sliceFilter';
+import { phonebookReducer } from './slicePhonebook';
 
 const rootReducer = (state = {}, action) => {
   return {
