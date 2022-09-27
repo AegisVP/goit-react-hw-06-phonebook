@@ -8,10 +8,3 @@ export const initialPhonebookValues = [
   { id: 'id-3', name: 'Eden Clements', number: '645-17-98' },
   { id: 'id-4', name: 'Annie Copeland', number: '227-98-76' },
 ];
-
-export const initialStore = {
-  contacts: {
-    filter: initialFilter,
-    items: initialPhonebookValues,
-  }
-};
