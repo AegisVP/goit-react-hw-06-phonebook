@@ -1,6 +1,7 @@
-export const searchFilter = search => {
+import { createAction } from '@reduxjs/toolkit';
+
+export const searchFilter = createAction('filter/search', search => {
   return {
-    type: 'filter/search',
     payload: { search },
   };
-};
+});
