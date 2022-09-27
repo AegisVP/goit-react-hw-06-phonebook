@@ -1,9 +1,12 @@
 import React from 'react';
 import { Box } from 'components/Common/Box.styled';
 import { List, ListItem, Name, Number, Button } from 'components/ListOfContacts/ListOfContacts.styled';
-import { PropTypes } from 'prop-types';
+import { deleteContact } from 'redux/phonebook/actions';
+import { useDispatch } from 'react-redux';
 
-export const ListOfContacts = ({ onDeleteContact, onEditContact, contacts }) => {
+export const ListOfContacts = ({ onDeleteContact, contacts }) => {
+  const dispatch = useDispatch();
+
   return (
     <List>
       {contacts.length > 0
@@ -14,34 +17,11 @@ export const ListOfContacts = ({ onDeleteContact, onEditContact, contacts }) => 
                 <Number className="number">{contact.number}</Number>
               </Box>
               <Box>
-                <Button
-                  onClick={() => {
-                    onEditContact(contact.id);
-                  }}
-                >
-                  ✏️
-                </Button>
-                <Button
-                  onClick={() => {
-                    onDeleteContact(contact.id);
-                  }}
-                >
-                  ❌
-                </Button>
+                <Button onClick={() => dispatch(deleteContact(contact.id))}>❌</Button>
               </Box>
             </ListItem>
           ))
         : 'No matches found'}
     </List>
   );
-};
-
-ListOfContacts.propTypes = {
-  onDeleteContact: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
 };

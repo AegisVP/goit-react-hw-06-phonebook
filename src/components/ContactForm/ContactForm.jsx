@@ -1,99 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { SubmitButton, ResetButton, Label, InputField } from './ContactForm.styled';
+import React from 'react';
+import { SubmitButton, Label, InputField } from './ContactForm.styled';
 import { Box } from 'components/Common/Box.styled';
-
-const initialValues = { id: '', name: '', number: '' };
-
-const addButtonText = 'Add user';
-const editButtonText = 'Update user';
+import { addContact } from 'redux/phonebook/actions';
+import { useDispatch } from 'react-redux';
 
 export const ContactForm = ({ editId, editName, editNumber, onSubmit, onResetForm }) => {
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  useEffect(() => {
-    setId(editId);
-    setName(editName);
-    setNumber(editNumber);
-  }, [editId, editName, editNumber]);
-
-  const setInitialValues = () => {
-    setId(initialValues.id);
-    setName(initialValues.name);
-    setNumber(initialValues.number);
-  };
+  const dispatch = useDispatch();
 
   const contactSubmitHandler = e => {
     e.preventDefault();
-    const { id, name, number } = e.target.elements;
-    const userAddedSuccessfully = onSubmit({ id: id.value, name: name.value, number: number.value });
     
-    if (userAddedSuccessfully) setInitialValues();
-  };
+    const { name, number } = e.target.elements;
 
-  const onResetLocalForm = () => {
-    setInitialValues();
-    onResetForm();
+    dispatch(addContact({ name: name.value, number: number.value }));
+    e.currentTarget.reset();
   };
-
-  const handleChange = e => {
-    const value = e?.currentTarget?.value;
-    switch (e?.currentTarget?.name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
-
-  if (editId && !id) {
-    setId(editId);
-    setName(editName);
-    setNumber(editNumber);
-  }
 
   return (
     <form action="#" onSubmit={contactSubmitHandler}>
-      <input name="id" defaultValue={id} hidden />
       <Box display="flex" flexDirection="column" mt="10px" p="0" border="1px solid #888888" borderRadius="2px">
         <Label htmlFor="contactName">Name</Label>
-        <InputField
-          id="contactName"
-          type="text"
-          name="name"
-          value={name}
-          title="Enter your name"
-          required
-          onChange={handleChange}
-        />
+        <InputField id="contactName" type="text" name="name" title="Enter your name" required />
       </Box>
       <Box display="flex" flexDirection="column" mt="10px" p="0" border="1px solid #888888" borderRadius="2px">
         <Label htmlFor="contactNumber">Phone number</Label>
         <InputField
           type="tel"
           name="number"
-          value={number}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,15}"
           title="Phone number must be up to 15 digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          onChange={handleChange}
         />
       </Box>
-      {editId ? (
-        <Box display="flex">
-          <SubmitButton type="submit">{editButtonText}</SubmitButton>
-          <ResetButton type="reset" onClick={onResetLocalForm}>
-            🔙
-          </ResetButton>
-        </Box>
-      ) : (
-        <SubmitButton type="submit">{addButtonText}</SubmitButton>
-      )}
+      <SubmitButton type="submit">Add user</SubmitButton>
     </form>
   );
 };
